@@ -1,4 +1,5 @@
 """Experimento de la Parte 4: Comparativa Insertion Sort vs Merge Sort."""
+
 import time
 import matplotlib.pyplot as plt
 from algoritmos import insertion_sort, merge_sort
@@ -10,31 +11,35 @@ def ejecutar_comparacion() -> None:
     tamanos = [100, 200, 400, 800, 1600, 3200, 6400]
     tiempos_insertion = []
     tiempos_merge = []
+    num_repeticiones = 5
 
     print("Ejecutando mediciones de Parte 4...")
     for n in tamanos:
         print(f"  Procesando n = {n}...")
-        lote = generar_aleatorio(n)
+        tiempos_ins_n = []
+        tiempos_mrg_n = []
 
-        # Insertion sort
-        t0 = time.perf_counter()
-        insertion_sort(lote)
-        t_ins = time.perf_counter() - t0
-        tiempos_insertion.append(t_ins)
+        for rep in range(num_repeticiones):
+            semilla = 42 + rep
+            lote = generar_aleatorio(n, semilla=semilla)
 
-        # Merge sort
-        t0 = time.perf_counter()
-        merge_sort(lote)
-        t_mrg = time.perf_counter() - t0
-        tiempos_merge.append(t_mrg)
+            t0 = time.perf_counter()
+            insertion_sort(lote)
+            tiempos_ins_n.append(time.perf_counter() - t0)
 
-    # Grafica de tiempo comparativa
+            t0 = time.perf_counter()
+            merge_sort(lote)
+            tiempos_mrg_n.append(time.perf_counter() - t0)
+
+        tiempos_insertion.append(sum(tiempos_ins_n) / num_repeticiones)
+        tiempos_merge.append(sum(tiempos_mrg_n) / num_repeticiones)
+
     plt.figure(figsize=(9, 5))
     plt.plot(tamanos, tiempos_insertion, marker="o", color="red", label="Insertion Sort")
     plt.plot(tamanos, tiempos_merge, marker="s", color="blue", label="Merge Sort")
     plt.title("Comparativa de Tiempo: Insertion Sort vs. Merge Sort (Escenario A)")
     plt.xlabel("Tamaño de la entrada (n)")
-    plt.ylabel("Tiempo de ejecución (segundos)")
+    plt.ylabel("Tiempo de ejecución promedio (segundos)")
     plt.grid(True, linestyle="--", alpha=0.6)
     plt.legend()
     plt.tight_layout()
@@ -45,3 +50,4 @@ def ejecutar_comparacion() -> None:
 
 if __name__ == "__main__":
     ejecutar_comparacion()
+

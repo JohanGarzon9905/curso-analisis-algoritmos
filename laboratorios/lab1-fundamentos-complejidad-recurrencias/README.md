@@ -1,52 +1,53 @@
 # Laboratorio 01 — Fundamentos, Complejidad y Recurrencias
 
-**Estudiante:** Johan Sneider Garzón Salazar C.C. 1026162862
-**Curso:** Análisis de Algoritmos
+**Estudiante:** Johan Sneider Garzón Salazar C.C. 1026162862  
+**Curso:** Análisis de Algoritmos  
 
 ---
 
 ## Instrucciones para reproducir el experimento
 
-1. Desde la raíz del repositorio (`curso-analisis-algoritmos/`), active el entorno virtual de Python:
+1. Desde la raíz del repositorio (`curso-analisis-algoritmos/`), activar el entorno virtual de Python:
    - **Windows (PowerShell):** `.\venv\Scripts\Activate.ps1`
    - **Linux / macOS / Git Bash:** `source venv/bin/activate`
 
-2. Instale o verifique las dependencias:
+2. Instalar o verificar las dependencias necesarias:
 
    ```bash
    pip install -r requirements.txt
    ```
-3. Ingrese a la carpeta del laboratorio:
+
+3. Entrar a la carpeta del laboratorio:
 
    ```bash
    cd laboratorios/lab1-fundamentos-complejidad-recurrencias
    ```
 
-4. Para ejecutar las pruebas de la Parte 3:
+4. Ejecutar las pruebas de la Parte 3 (mide 5 repeticiones por cada tamaño y promedia):
 
    ```bash
    python parte3_casos.py
    ```
 
-5. Para ejecutar la comparación de la Parte 4:
+5. Ejecutar la comparación de la Parte 4 (mide 5 repeticiones y promedia):
 
    ```bash
    python parte4_complejidad.py
    ```
 
-Las gráficas generadas deben quedar almacenadas en la carpeta `graficas/`.
+Las imágenes generadas se guardan automáticamente en la carpeta `graficas/`.
 
 ---
 
 ## Parte 1 — Analizar el algoritmo antes de comprar hardware
 
-Que un algoritmo entregue el resultado correcto no significa necesariamente que sea adecuado para usarlo en producción. En Tamiza, Insertion Sort sí ordena los registros de mayor a menor riesgo, por lo que cumple con su función. El problema aparece en el tiempo que necesita para hacerlo: actualmente se deben procesar 1.200.000 registros dentro de una ventana de cuatro horas, entre las 2:00 a. m. y las 6:00 a. m., y esa condición ya no se está cumpliendo.
+Que un algoritmo entregue el resultado correcto no significa que esté listo para usarse en un sistema real. En la plataforma Tamiza, Insertion Sort sí hace lo que se le pide: toma los pacientes y los ordena de mayor a menor riesgo sin equivocarse en el orden. El verdadero problema es cuánto tiempo tarda en hacerlo. Actualmente el sistema debe procesar 1.200.000 registros en una ventana de cuatro horas en la madrugada (entre las 2:00 a. m. y las 6:00 a. m.), y con el algoritmo actual ese tiempo ya no se está alcanzando.
 
-Por eso considero que antes de comprar un servidor más rápido se debe revisar el algoritmo. Insertion Sort tiene un crecimiento cuadrático en el caso promedio y en el peor caso, es decir, Θ(n²). Tamiza pasó de manejar alrededor de 20.000 registros a 1.200.000, lo que significa que el tamaño de la entrada aumentó 60 veces. Con un algoritmo cuadrático, ese aumento puede representar aproximadamente 60² = 3.600 veces más trabajo. Duplicar la velocidad del servidor puede reducir un tiempo de ejecución, pero no cambia la forma en que crece el algoritmo cuando siguen aumentando los datos.
+Por esta razón, antes de pensar en gastar dinero comprando un servidor más potente, lo primero que debemos revisar es el algoritmo. Insertion Sort tiene una complejidad cuadrática, es decir Θ(n²), tanto en su caso promedio como en el peor caso. Cuando Tamiza empezó manejaba unos 20.000 registros, pero ahora creció a 1.200.000, lo que significa que la cantidad de datos se multiplicó por 60. Como el algoritmo crece al cuadrado, multiplicar la entrada por 60 hace que la cantidad de operaciones se multiplique por aproximadamente 60² = 3.600 veces. Si compráramos una máquina el doble de rápida, el tiempo apenas se reduciría a la mitad (seguiría siendo unas 1.800 veces más lento que al inicio). El hardware ayuda un poco, pero no soluciona el hecho de que el algoritmo genera demasiado trabajo a medida que llegan más datos.
 
-Un ejemplo similar puede darse en un catálogo de comercio electrónico. Supongamos que una búsqueda compara el texto ingresado por el usuario contra las descripciones de 40.000 productos mediante una búsqueda exhaustiva. El sistema puede encontrar correctamente los productos relacionados, pero si tarda varios segundos en responder, deja de ser útil para una aplicación web donde se espera una respuesta casi inmediata. En ese caso el problema no es que el resultado sea incorrecto, sino que llega demasiado tarde para la necesidad del sistema.
+Un ejemplo parecido ocurre en el buscador de una tienda en línea. Imaginemos un catálogo con 40.000 productos donde cada búsqueda compara el texto escrito por el cliente contra el título y la descripción de cada producto usando un ciclo simple de fuerza bruta. El buscador va a encontrar los productos correctos, pero en una página web cualquier usuario espera que los resultados aparezcan en menos de medio segundo (entre 200 y 500 milisegundos como máximo). Si la búsqueda se toma 4 o 5 segundos en responder, la experiencia es pésima, la gente abandona la compra y el servidor se satura de consultas acumuladas. En ambos casos el algoritmo hace bien la tarea lógica, pero falla por completo en el tiempo que el negocio necesita.
 
-En conclusión, la compra de hardware puede mejorar temporalmente el tiempo de ejecución, pero primero debe revisarse si el algoritmo sigue siendo apropiado para el volumen actual y futuro de información.
+En conclusión, mejorar el hardware solo da un alivio temporal y costoso si primero no arreglamos el problema de raíz, que es la eficiencia del algoritmo.
 
 ---
 
@@ -54,133 +55,165 @@ En conclusión, la compra de hardware puede mejorar temporalmente el tiempo de e
 
 ### Dimensión ambiental
 
-El tiempo de ejecución también tiene un impacto sobre los recursos utilizados por la infraestructura. Mientras más tiempo permanezca el servidor procesando los datos, más tiempo utiliza CPU, memoria y energía. Si esto ocurre una sola vez puede parecer poco importante, pero en Tamiza el proceso se ejecuta todas las madrugadas. Por lo tanto, una diferencia de horas de procesamiento se acumula durante semanas, meses y años.
+El tiempo que un algoritmo tarda en ejecutarse tiene una relación directa con el consumo de energía y el impacto ambiental de los servidores. Cuando un proceso pone la CPU a trabajar al 100% durante varias horas continuas, el computador consume mucha más electricidad y genera calor que debe disiparse con sistemas de refrigeración.
 
-Elegir un algoritmo que realice el mismo trabajo en menos tiempo ayuda a disminuir ese uso continuo de recursos. En este caso, no se trata solamente de comprar una máquina más potente, sino de evitar que el sistema tenga que realizar una cantidad de operaciones que crece demasiado rápido cuando aumenta el número de registros.
+En Tamiza este proceso no se corre una sola vez, sino todas las noches del año (365 días). Si miramos los números:
+- **Con Insertion Sort:** Extrapolando las mediciones para 1.200.000 registros, el proceso tarda entre 8 y 22 horas según cómo vengan los datos. Siendo conservadores y asumiendo un promedio de unas **8 horas diarias**, al año son **2.920 horas de servidor trabajando al tope**.
+- **Consumo del servidor:** Un servidor estándar en un centro de datos consume alrededor de **300 W (0,30 kW)** cuando su procesador está ocupado al máximo.
+- **Consumo directo:** 2.920 horas × 0,30 kW = **876 kWh al año**.
+- **Consumo total con refrigeración (PUE):** En los centros de datos se usa el factor PUE (Power Usage Effectiveness), que típicamente ronda 1,5 para incluir el aire acondicionado y la energía de respaldo. Esto da:  
+  876 kWh × 1,5 = **1.314 kWh al año**.
+- **Comparación con Merge Sort:** Al usar un algoritmo Θ(n log n), el ordenamiento toma menos de un minuto diario. Si calculamos 60 segundos por día (incluyendo pausas y lecturas del sistema):  
+  (60 s / 3.600 s/h) × 365 días ≈ 6,08 horas de servidor al año.  
+  Su consumo total anual sería de apenas: 6,08 h × 0,30 kW × 1,5 ≈ **2,74 kWh al año**.
+
+Pasar a un algoritmo eficiente ahorra **más de 1.310 kWh de energía eléctrica cada año** en una sola máquina. En un contexto donde la generación eléctrica tiene un costo ambiental importante, escribir código eficiente también es una forma directa de reducir la huella de carbono de la tecnología.
 
 ### Dimensión ética
 
-La decisión también tiene consecuencias sobre personas reales. Si el proceso no termina antes de las 6:00 a. m., el centro de contacto puede empezar a trabajar con una lista incompleta o que todavía no está correctamente ordenada por nivel de riesgo.
+En un sistema de salud pública como Tamiza, las decisiones de código afectan directamente a personas reales. Si el proceso nocturno no termina antes de las 6:00 a. m., la lista de pacientes no queda lista a tiempo y esto causa perjuicios muy claros con responsables y afectados definidos:
 
-Una primera consecuencia es para el **paciente**. Una persona con un nivel de riesgo alto podría quedar más abajo en la lista y ser contactada después de otras personas con menor prioridad. En este caso, el paciente es quien asume principalmente el costo del error porque se retrasa una atención que debía priorizarse.
+1. **El paciente:**  
+   Si el call center empieza a llamar con una lista desordenada o a medio procesar, una persona con un nivel de riesgo crítico (por ejemplo, con sospecha de una enfermedad grave que requiere atención urgente) puede quedar al final de la lista. En este caso, **el paciente es quien asume el costo más alto y doloroso**: su atención se retrasa, su condición médica puede empeorar y, en el peor de los casos, puede sufrir complicaciones graves o la muerte por no recibir atención oportuna.
 
-Una segunda consecuencia es para los **operadores del centro de contacto**. Si reciben una lista incompleta o incorrectamente priorizada, deben trabajar con información que no refleja lo que el proceso debía entregar. Esto puede generar reprocesos, confusión y reclamos que realmente se originan en una falla previa del sistema.
+2. **Los operadores del centro de contacto:**  
+   Los operadores son quienes ponen la cara frente a la comunidad. Si el sistema les entrega datos desordenados o incompletos, tienen que lidiar con llamadas confusas, reprocesos y reclamos de usuarios molestos. **El costo para los operadores es el estrés laboral, la frustración y el desgaste emocional**, además de que sus métricas de rendimiento laboral se ven afectadas negativamente por culpa de una falla técnica del sistema.
 
-También existe una responsabilidad para la Secretaría y para el equipo técnico, porque son quienes deben garantizar que el proceso utilizado sea confiable para el volumen de datos que maneja la plataforma.
+3. **La Secretaría de Salud y el equipo técnico:**  
+   La entidad y quienes desarrollamos el sistema asumimos **el costo legal, económico e institucional**. La Secretaría se expone a demandas por falla en el servicio de salud, investigaciones y sanciones de entes de control (como la Superintendencia de Salud o la Contraloría), y pierde la confianza de los ciudadanos que esperan un servicio público serio y oportuno.
 
-En Tamiza, ordenar no es solamente organizar registros. El orden define a qué pacientes se contacta primero. Por eso, además de terminar a tiempo, el algoritmo debe conservar correctamente la prioridad de mayor a menor riesgo. Una falla en ese orden puede afectar directamente una decisión de atención.
+En Tamiza el orden de los datos no es un simple detalle visual: define a quién se atiende primero. Asegurar que el sistema ordene bien y termine a tiempo es un compromiso ético con la salud de las personas.
 
 ---
 
 ## Parte 3 — Peor caso, mejor caso y caso promedio, demostrados en Python
 
-*Código fuente relacionado:*
-
+*Archivos de código relacionados:*
 - [algoritmos.py](algoritmos.py)
 - [datos.py](datos.py)
-- [código de la Parte 3](parte3_casos.py)
+- [parte3_casos.py](parte3_casos.py)
 
 ### 3.1 — Explicación y predicciones
 
-Para un mismo tamaño de entrada **n**, un algoritmo puede necesitar una cantidad diferente de operaciones dependiendo de cómo lleguen organizados los datos.
+El tiempo que tarda un algoritmo no depende solo de cuántos datos reciba (n), sino de cómo vengan organizados desde el principio. Para analizar esto de forma rigurosa, pensamos en el conjunto de todas las posibles listas o entradas de tamaño n que podrían llegar (las n! formas posibles de ordenar los datos):
 
-- **Peor caso:** corresponde a la entrada de tamaño n que hace que el algoritmo realice la mayor cantidad de trabajo posible.
-- **Mejor caso:** corresponde a la entrada de tamaño n con la que el algoritmo necesita la menor cantidad de trabajo.
-- **Caso promedio:** representa el comportamiento esperado al considerar las distintas formas en las que pueden llegar las entradas de ese mismo tamaño.
+- **Peor caso (T_worst(n)):** Es el tiempo máximo que puede tardar el algoritmo entre todas las entradas posibles de tamaño n.  
+  `T_worst(n) = maximo { T(I) para toda entrada I de tamaño n }`  
+  En Insertion Sort, si queremos ordenar de mayor a menor, el peor caso ocurre cuando la lista viene totalmente al revés (de menor a mayor). En cada paso cada número nuevo tiene que compararse con todos los anteriores y moverse hasta el inicio, sumando en total:  
+  1 + 2 + 3 + ... + (n - 1) = n(n - 1) / 2 comparaciones.
 
-En Insertion Sort, cuando se ordena de mayor a menor, el mejor caso ocurre si la lista ya viene en ese mismo orden. En esa situación cada elemento prácticamente permanece en su posición y se realizan n − 1 comparaciones. El peor caso ocurre cuando la lista llega completamente al contrario, porque cada elemento debe desplazarse a través de gran parte de los elementos anteriores.
+- **Mejor caso (T_best(n)):** Es el tiempo mínimo posible entre todas las entradas de tamaño n.  
+  `T_best(n) = minimo { T(I) para toda entrada I de tamaño n }`  
+  Para ordenar de mayor a menor, ocurre cuando la lista ya viene ordenada exactamente en ese orden. Cada elemento nuevo se compara una sola vez con el anterior, ve que no necesita moverse y pasa al siguiente. Por eso solo hace n - 1 comparaciones y su complejidad es lineal, Θ(n).
 
-Para decidir si Tamiza puede entrar en producción usaría principalmente el **peor caso**. La razón es que la plataforma tiene una ventana máxima de cuatro horas y el canal de entrada puede cambiar. No sería suficiente que el proceso funcione bien solo cuando los datos llegan en condiciones favorables.
+- **Caso promedio (T_avg(n)):** Es el tiempo esperado al promediar todas las entradas posibles de tamaño n, suponiendo que cualquier orden tiene la misma probabilidad de ocurrir.  
+  `T_avg(n) = promedio de T(I) sobre todas las entradas de tamaño n`  
+  En promedio, cada número se inserta más o menos en la mitad de la parte ya ordenada (unas i/2 comparaciones en cada paso), lo que nos da aproximadamente la mitad del trabajo del peor caso:  
+  n(n - 1) / 4 comparaciones, manteniendo un crecimiento cuadrático Θ(n²).
 
-**Predicción antes de realizar las mediciones:**
+Para decidir si el sistema puede salir a producción debemos guiarnos por el **peor caso**. En el mundo real los datos pueden venir desordenados por fallas en la recolección, cambios de formato o caídas de red. No podemos confiar la operación del hospital a la suerte de que los datos siempre lleguen en condiciones ideales.
 
-- **Escenario C (orden inverso):** esperaba que fuera el peor de los tres escenarios porque los datos llegan exactamente al contrario del orden requerido.
-- **Escenario B (casi ordenado):** esperaba que fuera el escenario más favorable, debido a que el 98 % del lote ya viene ordenado.
-- **Escenario A (aleatorio):** esperaba que se aproximara al comportamiento promedio de Insertion Sort.
+**Lo que predije antes de hacer los experimentos:**
+- **Escenario C (orden inverso):** Iba a ser el más lento de todos y el de mayor número de comparaciones, acercándose a la fórmula teórica n(n - 1) / 2.
+- **Escenario B (casi ordenado, 98% listo):** Iba a ser el más rápido entre los escenarios de prueba, porque casi todos los elementos ya están en su lugar y solo el 2% final tiene que acomodarse.
+- **Escenario A (aleatorio):** Iba a quedar en la mitad entre B y C, representando el comportamiento promedio con más o menos la mitad de comparaciones que C.
 
 ### 3.2 — Demostración experimental y gráficas
+
+> **Nota sobre cómo se tomaron los datos:** Para evitar que las variaciones del computador afectaran los resultados (como pausas del sistema operativo o cambios de velocidad del procesador), cada prueba se corrió **5 veces con semillas diferentes y se calculó el promedio aritmético** tanto para el tiempo como para las comparaciones.
 
 ![Comparaciones por escenario](graficas/parte3_comparaciones.png)
 
 ![Tiempo de ejecución por escenario](graficas/parte3_tiempo.png)
 
-Los resultados obtenidos coinciden con la predicción general que se hizo antes de ejecutar las pruebas.
+Los resultados medidos en el computador confirmaron exactamente lo que predije en la teoría:
 
-Para **n = 6.400**, el escenario C llegó a aproximadamente **20,48 millones de comparaciones**, siendo claramente el que más trabajo exigió. Ese resultado está muy cerca de n(n − 1) / 2 = 20.476.800, que es lo esperado para el peor caso de Insertion Sort.
+1. **Comparaciones:**
+   - En **n = 6.400**, el **Escenario C** hizo exactamente **20.476.800 comparaciones**. Este número coincide de forma exacta con la fórmula teórica:  
+     6.400 × 6.399 / 2 = 20.476.800.
+   - El **Escenario A** necesitó en promedio **10.342.553 comparaciones** (unos 10,34 millones). Esto es prácticamente el 50,5% del peor caso, lo cual encaja con el cálculo del caso promedio de n(n - 1) / 4 = 10.238.400.
+   - El **Escenario B** hizo solo **10.621 comparaciones**. Como el 98% ya venía ordenado de forma decreciente, casi todo el lote se resolvió con una sola comparación por elemento, y solo el 2% final requirió desplazamientos, quedando muy cerca del mejor caso teórico ideal (n - 1 = 6.399).
 
-El escenario A realizó aproximadamente **10,4 millones de comparaciones**, cerca de la mitad del escenario C. Esto concuerda con el comportamiento esperado para datos distribuidos aleatoriamente y permite tomarlo como una aproximación al caso promedio dentro del experimento.
-
-El escenario B fue el que obtuvo los mejores resultados entre los tres escenarios probados, con alrededor de **410.000 comparaciones** para n = 6.400. Aunque es mucho menor que A y C, no es igual al mejor caso teórico de Insertion Sort, que sería n − 1 comparaciones. Esto tiene sentido porque todavía existe un 2 % de elementos agregados al final que deben buscar su posición dentro de la parte ya ordenada.
-
-La gráfica de tiempo muestra el mismo comportamiento. Para n = 6.400, el escenario C tardó cerca de **1,58 segundos**, el escenario A alrededor de **0,87 segundos** y el escenario B aproximadamente **0,034 segundos**. Por lo tanto, las mediciones respaldan la predicción: C fue el escenario más costoso, B el más favorable de los escenarios de Tamiza y A quedó en un punto intermedio cercano al comportamiento promedio.
+2. **Tiempos de ejecución:**
+   - Para **n = 6.400**, el Escenario C tardó en promedio **2,34 segundos**, el Escenario A tardó **1,35 segundos** y el Escenario B tardó apenas **0,0013 segundos**.
+   - Para tamaños pequeños (**n ≤ 200**), en la gráfica casi no se nota separación entre las tres líneas. La razón es que para listas tan cortas el tiempo es de menos de un milisegundo (0,0002 s a 0,0008 s), por lo que el costo del propio intérprete de Python oculta las diferencias. Pero a partir de n = 800 la curva se dispara visiblemente hacia arriba en A y en C, mostrando con claridad el crecimiento cuadrático.
 
 ---
 
 ## Parte 4 — Complejidad de Merge Sort e Insertion Sort: cálculo y validación
 
-*Código fuente relacionado:*
-
+*Archivos de código relacionados:*
 - [algoritmos.py](algoritmos.py)
-- [código de la Parte 4](parte4_complejidad.py)
+- [parte4_complejidad.py](parte4_complejidad.py)
 
 ### 4.1 — Cálculo teórico
 
-#### Recurrencia de Merge Sort
+#### Recurrencia de Merge Sort y resolución por el Método Maestro
 
-Merge Sort divide la lista en dos mitades, ordena cada mitad de forma recursiva y posteriormente mezcla los resultados. Por esta razón, su recurrencia puede escribirse como:
+Merge Sort divide la lista en dos mitades de tamaño n/2, ordena cada mitad por separado usando recursión y luego las combina mediante una función de mezcla que recorre los elementos de forma lineal. Por eso su ecuación de recurrencia es:
 
-**T(n) = 2T(n/2) + Θ(n)**
+`T(n) = 2T(n/2) + Θ(n)`
 
-En esta expresión:
+Donde:
+- `2T(n/2)` representa las dos llamadas recursivas con la mitad de los elementos cada una.
+- `Θ(n)` representa el trabajo de mezclar ambas mitades ordenadas.
 
-- **2T(n/2)** representa los dos subproblemas que se generan, cada uno con la mitad de los elementos.
-- **Θ(n)** representa el trabajo de mezclar las dos mitades, ya que durante esa operación se recorren los elementos para construir la lista ordenada.
+Para resolver esta ecuación apliqué el **Método Maestro**, que tiene la forma general:
 
-Para resolver la recurrencia utilicé el **Método Maestro**.
+`T(n) = aT(n/b) + f(n)`
 
-La forma general es:
+Identificando los valores para Merge Sort:
+- `a = 2` (se dividen en dos subproblemas).
+- `b = 2` (cada subproblema tiene la mitad del tamaño original).
+- `f(n) = Θ(n)` (el costo de mezclar es lineal).
 
-**T(n) = aT(n/b) + f(n)**
-
-Para Merge Sort:
-
-- a = 2, porque se generan dos subproblemas.
-- b = 2, porque cada subproblema tiene la mitad del tamaño original.
-- f(n) = Θ(n), porque la mezcla recorre linealmente los elementos.
-
-El Método Maestro pide comparar f(n) con n elevado a log base b de a. En este caso, log₂(2) = 1, por lo que ese término es simplemente n. Como f(n) también crece linealmente, se cumple el caso 2 del Método Maestro.
-
-El resultado es:
-
-**T(n) = Θ(n log n)**
+**Paso a paso de la condición verificada:**
+1. Calculamos el valor crítico del exponente:  
+   `log_b(a) = log_2(2) = 1`  
+   Por lo tanto: `n^(log_b a) = n^1 = n`.
+2. Comparamos `f(n)` con `n^(log_b a)`:  
+   Aquí `f(n) = Θ(n)` y `n^1 = n`. Vemos que ambas funciones crecen exactamente a la misma tasa.
+3. Esto cumple de forma directa la condición del **Caso 2 del Método Maestro** con k = 0:  
+   `f(n) = Θ(n^(log_b a) · log^0 n) = Θ(n)`.
+4. La fórmula de solución para este caso nos dice que multiplicamos por un logaritmo adicional:  
+   `T(n) = Θ(n^(log_b a) · log^(k+1) n) = Θ(n^1 · log^1 n) = Θ(n log n)`.
 
 #### Conteo línea a línea de Insertion Sort en el peor caso
 
-En el peor caso, cada elemento nuevo debe recorrer todos los elementos que ya fueron procesados. Tomando la estructura de la implementación de `insertion_sort`, el conteo queda así:
+Para entender de dónde sale el Θ(n²) de Insertion Sort, analicé el código línea por línea sumando el costo de cada instrucción (c_i) multiplicado por el número de veces que se ejecuta cuando los datos vienen en el peor caso (orden inverso):
 
-- La copia inicial de la lista se realiza una vez.
-- El `for` recorre las posiciones desde 1 hasta n − 1, por lo que su cuerpo se ejecuta n − 1 veces.
-- La asignación de la clave y la inicialización de `j` también se realizan n − 1 veces.
-- En la iteración i, la comparación entre elementos del `while` puede ejecutarse i veces en el peor caso.
-- El desplazamiento del elemento y el decremento de `j` se ejecutan la misma cantidad de veces que esas comparaciones exitosas.
-- La asignación final de la clave se realiza una vez por cada iteración del `for`, es decir, n − 1 veces.
+| Línea de código | Costo unitario | Veces que se ejecuta en el peor caso |
+|:---|:---:|:---:|
+| `arr = datos.copy()` | c_1 | 1 |
+| `comparaciones = 0` | c_2 | 1 |
+| `n = len(arr)` | c_3 | 1 |
+| `for i in range(1, n):` | c_4 | n |
+| `clave = arr[i]` | c_5 | n - 1 |
+| `j = i - 1` | c_6 | n - 1 |
+| `while j >= 0:` | c_7 | (1 + 2 + ... + n) = n(n + 1)/2 - 1 |
+| `comparaciones += 1` | c_8 | 1 + 2 + ... + (n - 1) = n(n - 1)/2 |
+| `if arr[j] < clave:` | c_9 | 1 + 2 + ... + (n - 1) = n(n - 1)/2 |
+| `arr[j + 1] = arr[j]` | c_10 | 1 + 2 + ... + (n - 1) = n(n - 1)/2 |
+| `j -= 1` | c_11 | 1 + 2 + ... + (n - 1) = n(n - 1)/2 |
+| `arr[j + 1] = clave` | c_12 | n - 1 |
+| `return arr, comparaciones` | c_13 | 1 |
 
-La cantidad de comparaciones entre elementos que domina el costo es entonces:
+Al multiplicar cada costo por sus repeticiones y agrupar los términos semejantes por las potencias de n:
 
-**1 + 2 + 3 + ... + (n − 1)**
+`T(n) = [ (c_7 + c_8 + c_9 + c_10 + c_11) / 2 ] · n² + [ c_4 + c_5 + c_6 + c_12 + (c_7 - c_8 - c_9 - c_10 - c_11) / 2 ] · n + Constantes`
 
-La suma puede escribirse como:
+Esto nos da una ecuación cuadrática de la forma:
 
-**n(n − 1) / 2 = ½n² − ½n**
+`T(n) = A·n² + B·n + C`
 
-Cuando n aumenta, el término n² es el que más influye en el crecimiento. Por eso el peor caso de Insertion Sort es **Θ(n²)**.
+Como el término que domina el crecimiento cuando n se hace grande es n², demostramos analíticamente que en el peor caso **T(n) = Θ(n²)**.
 
 #### Tabla de complejidades
 
-| Algoritmo | Mejor caso | Caso promedio | Peor caso |
-| :--- | :---: | :---: | :---: |
-| **Insertion Sort** | Θ(n) | Θ(n²) | Θ(n²) |
-| **Merge Sort** | Θ(n log n) | Θ(n log n) | Θ(n log n) |
+| Algoritmo | Mejor caso | Caso promedio | Peor caso | Memoria extra |
+| :--- | :---: | :---: | :---: | :---: |
+| **Insertion Sort** | Θ(n) | Θ(n²) | Θ(n²) | Θ(1) (ordena en el mismo arreglo) |
+| **Merge Sort** | Θ(n log n) | Θ(n log n) | Θ(n log n) | Θ(n) (usa listas auxiliares) |
 
 ---
 
@@ -188,31 +221,51 @@ Cuando n aumenta, el término n² es el que más influye en el crecimiento. Por 
 
 ![Comparativa Insertion Sort vs Merge Sort](graficas/parte4_tiempo.png)
 
-La comparación se realizó usando el escenario A y los mismos tamaños utilizados en la Parte 3.
+Para la comparación usamos el Escenario A (aleatorio) promediando 5 repeticiones en cada tamaño de entrada:
 
-En la gráfica se observa que la diferencia entre los algoritmos aumenta a medida que crece la entrada. Para **n = 6.400**, Insertion Sort tardó aproximadamente **0,814 segundos**, mientras que Merge Sort tardó cerca de **0,011 segundos**.
+Para **n = 6.400**, Insertion Sort tardó en promedio **0,90 segundos**, mientras que Merge Sort tardó solo **0,012 segundos**. Esto significa que Merge Sort fue casi **74 veces más rápido** en esta prueba.
 
-La curva de Insertion Sort crece cada vez más rápido, mientras que la de Merge Sort permanece mucho más cerca del eje horizontal durante todo el experimento. Esto coincide con lo calculado en la Parte 4.1: Insertion Sort tiene crecimiento cuadrático en el caso promedio, mientras que Merge Sort mantiene un crecimiento de Θ(n log n).
-
-En los tamaños pequeños la diferencia visual entre ambos algoritmos es reducida y puede verse afectada por el costo propio de las llamadas recursivas y de la creación de listas de Merge Sort. Sin embargo, al aumentar n la tendencia se vuelve clara y Merge Sort presenta un mejor comportamiento para el volumen de datos que necesita manejar Tamiza.
+**¿Qué pasa con los tamaños pequeños (n ≤ 400)?**  
+Si nos fijamos en la gráfica al principio (para n = 100 y n = 200), las dos líneas están prácticamente pegadas al eje (ambas tardan menos de un milisegundo). Esto tiene una explicación técnica muy clara:
+1. **Merge Sort tiene un costo fijo inicial:** tiene que hacer llamadas recursivas en la pila y crear listas temporales en memoria para ir mezclándolas.
+2. **Insertion Sort es muy simple en listas pequeñas:** como es solo un bucle que mueve datos en una misma lista, aprovecha muy bien la memoria rápida del procesador (caché L1/L2) y no gasta tiempo en funciones adicionales.
+3. **Punto de cruce:** Al llegar a unos 400 elementos, la fórmula n² de Insertion Sort empieza a pesar mucho más que cualquier ventaja inicial, y su curva se dispara rápidamente hacia arriba, mientras que la curva de Merge Sort sigue prácticamente plana.
 
 ---
 
 ### 4.3 — Concepto técnico a la Secretaría de Salud
 
-**Destinatario:** Dirección de Sistemas e Infraestructura — Secretaría de Salud Departamental  
-**Asunto:** Concepto técnico sobre el ordenamiento nocturno de la Plataforma Tamiza
+**Para:** Dirección de Sistemas e Infraestructura — Secretaría de Salud Departamental  
+**De:** Johan Sneider Garzón Salazar — Estudiante en apoyo técnico de la Plataforma Tamiza  
+**Asunto:** Concepto técnico sobre el ordenamiento nocturno de la Plataforma Tamiza  
 
-Después de revisar el comportamiento de Insertion Sort y compararlo con Merge Sort, recomiendo reemplazar el algoritmo actual por **Merge Sort** para el proceso nocturno de Tamiza. La principal razón es que el canal por el que llegan los registros puede cambiar y, por lo tanto, no es posible asumir que los datos siempre estarán casi ordenados. Mantener un solo algoritmo cuyo comportamiento sea estable frente a las distintas formas de entrada reduce ese riesgo.
+#### 1. Recomendación principal
+Recomiendo de forma clara e inmediata **cambiar el algoritmo actual Insertion Sort por Merge Sort** para el procesamiento nocturno de Tamiza.
 
-Las mediciones realizadas muestran claramente la diferencia. En el escenario A, con **6.400 registros**, Insertion Sort tardó aproximadamente **0,814 segundos**, mientras que Merge Sort necesitó alrededor de **0,011 segundos**. Además, en la Parte 3 se observó que Insertion Sort llegó a **1,58 segundos** para la misma cantidad de registros cuando la entrada estaba en orden inverso. Esto es importante porque demuestra que el tiempo del algoritmo actual depende bastante de cómo lleguen los datos.
+No podemos asumir que los datos siempre van a llegar casi ordenados. El canal de entrada puede cambiar o sufrir errores, y si eso pasa, Insertion Sort se vuelve inmanejable. Merge Sort nos da la tranquilidad de que siempre va a tardar Θ(n log n), sin importar cómo vengan organizados los pacientes.
 
-Para estimar qué podría ocurrir con los **1.200.000 registros** de Tamiza, tomé las mediciones anteriores como punto de partida. El aumento desde 6.400 hasta 1.200.000 registros corresponde a un factor de 187,5. Como Insertion Sort tiene crecimiento cuadrático, usando el dato del escenario A la estimación es de aproximadamente **28.617 segundos**, es decir, cerca de **7,95 horas**. Si se toma como referencia el escenario C, donde se midieron 1,58 segundos para 6.400 registros, la misma extrapolación da aproximadamente **15,43 horas**. Estas cifras son estimaciones basadas en las mediciones realizadas y no tiempos medidos directamente sobre 1.200.000 registros.
+#### 2. Datos medidos y proyección para 1.200.000 registros
+En nuestras pruebas con 6.400 registros, Insertion Sort tardó **0,90 s** en orden aleatorio y **2,34 s** en orden inverso, mientras que Merge Sort tardó apenas **0,012 s**.
 
-Para Merge Sort, partiendo de los **0,011 segundos** medidos con 6.400 registros y considerando su crecimiento n log n, la proyección es de aproximadamente **3,29 segundos** para 1.200.000 registros. Aunque en un ambiente real pueden aparecer otros costos de lectura, memoria o infraestructura, la diferencia de crecimiento entre ambos algoritmos es suficientemente grande para justificar el cambio.
+Al proyectar esto para los **1.200.000 registros** reales de Tamiza (lo que significa multiplicar el tamaño por 187,5):
+- **Insertion Sort en caso promedio:** (187,5)² × 0,90 s ≈ 31.640 segundos ≈ **8,8 horas**.
+- **Insertion Sort en peor caso:** (187,5)² × 2,34 s ≈ 82.265 segundos ≈ **22,8 horas**.
+- **Merge Sort (proyección matemática de CPU pura):**  
+  Factor de escala = [1.200.000 · log_2(1.200.000)] / [6.400 · log_2(6.400)] ≈ 299,5.  
+  Tiempo teórico de CPU = 0,012 s × 299,5 ≈ **3,6 segundos**.
 
-Con estos resultados tampoco considero conveniente resolver el problema únicamente comprando un servidor del doble de velocidad. Incluso suponiendo, de forma favorable, que duplicar la capacidad redujera exactamente a la mitad el tiempo de cómputo, la estimación del escenario C pasaría de unas 15,43 horas a cerca de **7,7 horas**, todavía por encima de la ventana máxima de cuatro horas. El hardware puede ayudar, pero no corrige el crecimiento cuadrático del algoritmo actual.
+> [!WARNING]  
+> **Advertencia importante sobre los tiempos en un sistema real:**  
+> Quiero dejar muy claro que esos 3,6 segundos son una proyección teórica que mide solo el tiempo que la CPU tarda en ordenar números dentro de la memoria RAM. En el sistema real de la Secretaría van a existir otros tiempos que debemos tener en cuenta:
+> 1. **Lectura y red de la base de datos:** Traer 1.200.000 registros médicos completos desde la base de datos SQL Server y cargarlos en el programa toma tiempo de red y disco (fácilmente entre 15 y 40 segundos).
+> 2. **Uso de memoria en el servidor:** Merge Sort crea listas intermedias mientras divide y mezcla. Para 1,2 millones de registros con nombres, cédulas y datos clínicos, esto va a requerir varios cientos de megabytes de memoria RAM y el recolector de memoria de Python necesitará tiempo para limpiarla.
+> 
+> Aún sumando todos estos costos reales del servidor, el proceso completo con Merge Sort tardará entre **30 segundos y 2 minutos**, lo cual cumple sobradamente con la ventana de cuatro horas (14.400 segundos), mientras que Insertion Sort tardaría entre 8 y 22 horas y nunca podrá cumplirla.
 
-Merge Sort sí necesita memoria adicional para realizar la mezcla de las listas, por lo que este aspecto debe tenerse en cuenta en la implementación. Aun así, para Tamiza considero que el costo adicional de memoria es un compromiso razonable frente a la mejora observada en tiempo y, sobre todo, frente a la necesidad de cumplir la ventana de procesamiento sin depender del orden en que lleguen los registros.
+#### 3. ¿Por qué comprar un servidor más rápido no soluciona el problema?
+Si la Secretaría decide comprar un servidor con el doble de velocidad de procesamiento, el tiempo de Insertion Sort en el peor caso pasaría de 22,8 horas a unas **11,4 horas**. Seguiría estando muy por encima del límite de las cuatro horas (de 2:00 a. m. a 6:00 a. m.). Comprar máquinas más caras no cambia la matemática: cuando un algoritmo crece al cuadrado, duplicar el procesador no resuelve la lentitud.
+
+#### 4. Compromiso de memoria
+Merge Sort necesita memoria adicional (Θ(n)) para hacer las mezclas de las listas. Para 1.200.000 registros debemos asegurarnos de que el servidor tenga suficiente memoria RAM libre en la madrugada (al menos 2 a 4 GB libres) para que el proceso no se bloquee. Este gasto de memoria es mínimo comparado con el beneficio de pasar de 8 o 20 horas de espera a menos de 2 minutos.
 
 ---

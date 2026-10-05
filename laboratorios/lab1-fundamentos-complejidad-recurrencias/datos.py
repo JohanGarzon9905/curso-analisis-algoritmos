@@ -1,4 +1,5 @@
 """Generadores de lotes de registros para los escenarios de Tamiza."""
+
 import random
 
 
@@ -30,12 +31,11 @@ def generar_casi_ordenado(n: int, semilla: int = 42) -> list[int]:
         desordenado al final.
     """
     rng = random.Random(semilla)
-    datos = rng.sample(range(max(n * 5, 2000)), n)
     n_ordenados = int(n * 0.98)
-
-    # El 98% ya ordenado de mayor a menor
-    parte_ordenada = sorted(datos[:n_ordenados], reverse=True)
-    parte_desordenada = datos[n_ordenados:]
+    base = max(n * 5, 2000)
+    parte_ordenada = list(range(base, base - n_ordenados, -1))
+    pool_restante = range(1, base - n_ordenados)
+    parte_desordenada = rng.sample(pool_restante, n - n_ordenados)
     return parte_ordenada + parte_desordenada
 
 
@@ -50,3 +50,4 @@ def generar_inverso(n: int) -> list[int]:
         inverso al que el algoritmo debe producir (menor a mayor).
     """
     return list(range(n))
+

@@ -49,6 +49,14 @@ def merge_sort(datos: list[int]) -> tuple[list[int], int]:
     arr = datos.copy()
 
     def _merge_sort_rec(lista: list[int]) -> tuple[list[int], int]:
+        """Divide recursivamente la lista a la mitad y combina las partes ordenadas.
+
+        Args:
+            lista: sublista a ordenar.
+
+        Returns:
+            Tupla con la sublista ordenada decrecientemente y el acumulado de comparaciones.
+        """
         if len(lista) <= 1:
             return lista, 0
 
@@ -60,6 +68,15 @@ def merge_sort(datos: list[int]) -> tuple[list[int], int]:
         return mezclada, comp_izq + comp_der + comp_merge
 
     def _merge(izq: list[int], der: list[int]) -> tuple[list[int], int]:
+        """Mezcla dos sublistas ordenadas en orden decreciente contando comparaciones.
+
+        Args:
+            izq: primera sublista ordenada.
+            der: segunda sublista ordenada.
+
+        Returns:
+            Tupla con la lista combinada ordenada y las comparaciones realizadas.
+        """
         resultado: list[int] = []
         i = j = 0
         comp = 0
@@ -78,3 +95,4 @@ def merge_sort(datos: list[int]) -> tuple[list[int], int]:
         return resultado, comp
 
     return _merge_sort_rec(arr)
+
