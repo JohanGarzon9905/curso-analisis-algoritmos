@@ -1,81 +1,81 @@
 # Retroalimentación — Laboratorio 01: Fundamentos, complejidad y recurrencias
 
 **Estudiante:** Johan Sneider Garzón Salazar · **Laboratorio:** Laboratorio evaluativo 01 — Fundamentos, complejidad y recurrencias
-**Fecha límite:** 2026-10-05 23:59 · **Versión revisada:** commit `c2b5ba9`
+**Fecha límite:** 2026-10-06 23:59 · **Versión revisada:** commit `50f52ea`
+
+Muy buen trabajo: el informe es completo y apoyado en sus propias mediciones.
 
 ## Nota
 
 | Criterio | Puntos |
 |---|---|
-| Corrección conceptual | 21 / 25 |
-| Calidad de la explicación teórica | 20 / 25 |
-| Corrección de la implementación | 10 / 20 |
+| Corrección conceptual | 23 / 25 |
+| Calidad de la explicación teórica | 24 / 25 |
+| Corrección de la implementación | 18 / 20 |
 | Calidad del análisis de las gráficas | 17 / 20 |
-| Documentación y organización del informe | 9 / 10 |
-| **Total** | **77 / 100** |
-| **Nota (0–5)** | **3.85** |
+| Documentación y organización del informe | 10 / 10 |
+| **Total** | **92 / 100** |
+| **Nota (0–5)** | **4.60** |
 
-## 1. Corrección conceptual (21 / 25)
+## 1. Corrección conceptual (23 / 25)
 **Lo que hizo bien:**
-- Distingue bien entre ordenar correctamente y hacerlo a tiempo, y nombra la ventana de cuatro horas como lo que se incumple.
-- Explica con números (60 veces más datos, unas 3.600 veces más trabajo) por qué un servidor más rápido no arregla el problema.
-- Da dos perjuicios concretos (el paciente y el operador del centro de contacto) y dice quién asume el costo en el caso del paciente.
+- Distingue entre ordenar bien y ordenar a tiempo, y nombra la ventana de cuatro horas como la restricción que se incumple.
+- Explica con números (60 veces más datos, unas 3.600 veces más trabajo) por qué un servidor el doble de rápido no resuelve el problema.
+- El segundo ejemplo (buscador de una tienda con 40.000 productos) dice qué se procesa y cuál es el tiempo máximo esperado (menos de medio segundo).
+- Calcula el consumo de energía anual (kWh) del proceso nocturno y lo compara con merge sort.
+- Da tres perjuicios (paciente, operadores y Secretaría) y dice quién asume el costo en cada uno.
 - Reconoce que el orden de la lista decide a quién se llama primero.
 
 **Lo que puede mejorar:**
-- El segundo ejemplo (catálogo de 40.000 productos) no dice qué tiempo máximo se esperaba; "varios segundos" es vago.
-- La parte ambiental es solo cualitativa: faltó relacionar las horas de ejecución con el consumo de energía acumulado.
-- Faltó decir claramente quién asume el costo en el caso del operador y de la Secretaría.
+- La obligación que impone ese orden quedó en una sola frase: faltó desarrollar qué debe garantizarse sobre la corrección del ordenamiento, más allá del tiempo.
+- Las horas diarias que usa para el cálculo de energía (8 h) son un supuesto; convendría decir de dónde sale.
 
-## 2. Calidad de la explicación teórica (20 / 25)
+## 2. Calidad de la explicación teórica (24 / 25)
 **Lo que hizo bien:**
-- Define los tres casos, justifica el peor caso para la decisión y deja escrita la predicción antes de medir.
-- Plantea `T(n) = 2T(n/2) + Θ(n)`, explica cada término y lo resuelve con el método maestro identificando `a`, `b` y `f(n)`.
-- Presenta la tabla de complejidades.
+- Define peor, mejor y caso promedio indicando sobre qué entradas se toma el máximo, el mínimo y el promedio, justifica usar el peor caso y deja la predicción escrita antes de medir.
+- Plantea `T(n) = 2T(n/2) + Θ(n)`, explica cada término y lo resuelve con el método maestro verificando la condición del caso 2.
+- Hace el conteo línea a línea de insertion sort con el número de veces que se ejecuta cada línea y llega a `Θ(n²)`.
+- Presenta la tabla de complejidades por caso.
 
 **Lo que puede mejorar:**
-- En las definiciones de los casos falta precisar sobre qué conjunto de entradas se toma el máximo, el mínimo y el promedio.
-- En insertion sort describe qué hace cada línea, pero no da cuántas veces se ejecuta cada una ni suma los costos de todas.
-- En el método maestro, escriba explícitamente la comparación de `f(n)` con `n^(log_b a)` como condición verificada.
+- En las definiciones, aclare que el tamaño `n` se mantiene fijo al tomar el máximo, el mínimo o el promedio.
+- El conteo línea a línea se hace solo para el peor caso; agregue también el mejor caso para ver de dónde sale `Θ(n)`.
 
-## 3. Corrección de la implementación (10 / 20)
+## 3. Corrección de la implementación (18 / 20)
 **Lo que hizo bien:**
-- `insertion_sort` y `merge_sort` ordenan bien de mayor a menor, no cambian la lista original y cuentan comparaciones correctamente (n − 1 en el mejor caso, n(n − 1)/2 en el peor).
-- `merge_sort` tiene su propia mezcla recursiva.
-- Los generadores producen valores distintos, con semilla reproducible.
+- `insertion_sort` y `merge_sort` ordenan bien de mayor a menor en mis pruebas con listas aleatorias y pequeñas, no cambian la lista recibida y cuentan solo comparaciones entre elementos (n − 1 en el mejor caso, n(n − 1)/2 en el peor).
+- `merge_sort` tiene su propia mezcla recursiva y no se usa `sorted()` ni `list.sort()` en ningún archivo.
+- Los tres generadores producen valores distintos del tamaño pedido, con semilla reproducible; el escenario B deja el 98 % ordenado y el 2 % desordenado al final.
+- Todas las funciones tienen *type hints* y *docstring*.
 
 **Lo que puede mejorar:**
-- En `datos.py`, el generador del escenario B usa `sorted()`. La guía prohíbe usar `sorted()` en el código entregado; aquí lo debía construir sin esa función (por ejemplo con `range`).
-- Las funciones internas de `merge_sort` no tienen *docstring*.
-- Los archivos no terminan con salto de línea y falta una línea en blanco antes de las importaciones (PEP 8).
+- Los cuatro archivos `.py` terminan con una línea en blanco de más (detalle de PEP 8).
+- Las estructuras de resultados en los scripts de medición podrían llevar anotación de tipos.
 
 ## 4. Calidad del análisis de las gráficas (17 / 20)
 **Lo que hizo bien:**
-- Las tres gráficas existen, con título, ejes con unidades y leyenda, y los escenarios en los mismos ejes.
-- Identifica con cifras que C es el peor caso, B el mejor y A cercano al promedio, y lo contrasta con la predicción.
-- En la Parte 4 describe cada curva y la relaciona con las complejidades calculadas.
-- El concepto técnico recomienda Merge Sort, estima las horas para 1.200.000 registros declarándolas como estimación, responde sobre el servidor doble con datos medidos y menciona la memoria extra.
+- Las tres gráficas existen, con título, ejes rotulados, leyenda y las curvas pedidas en los mismos ejes.
+- Identifica con cifras que C es el peor caso, B el mejor y A cercano al promedio, y lo contrasta con su predicción.
+- En la Parte 4 describe qué hace cada curva, explica por qué merge sort no gana en tamaños muy pequeños y mide la diferencia en n = 6.400.
+- El concepto técnico recomienda merge sort, extrapola a 1.200.000 registros declarándolo como proyección, responde sobre el servidor doble con datos medidos y discute memoria y otros costos reales.
 
 **Lo que puede mejorar:**
-- La estimación de Merge Sort (3,29 s) no tiene en cuenta otros costos reales; sería bueno advertirlo con más fuerza.
-- Faltó explicar con más detalle qué se ve en la gráfica para los tamaños pequeños.
-- Faltó indicar si repitió las mediciones y promedió.
+- En 3.2 el informe dice que en n = 6.400 el escenario A tardó 1,35 s y C 2,34 s, pero las gráficas publicadas muestran cerca de 0,90 s y 1,65 s. Los datos del texto deben coincidir con los de la gráfica.
+- En 4.2 diga explícitamente que lo observado coincide con `Θ(n log n)` frente a `Θ(n²)` calculados en 4.1.
+- En 4.3 cite la gráfica de la que toma el dato del servidor doble.
 
-## 5. Documentación y organización del informe (9 / 10)
+## 5. Documentación y organización del informe (10 / 10)
 **Lo que hizo bien:**
-- La carpeta está en `laboratorios/lab1-fundamentos-complejidad-recurrencias/`, ubicación válida, con todos los archivos pedidos.
-- El informe sigue el orden pedido, incrusta las gráficas con rutas que funcionan y enlaza el código.
-- Hay instrucciones de reproducción claras y seis commits con mensajes descriptivos.
-
-**Lo que puede mejorar:**
-- Hay un `requirements.txt` adicional dentro de la carpeta del laboratorio que no estaba en el entregable.
+- La carpeta está en `laboratorios/lab1-fundamentos-complejidad-recurrencias/`, ubicación válida, con todos los archivos y gráficas pedidos.
+- El informe sigue el orden pedido, incrusta las gráficas con rutas que funcionan y enlaza el código de cada parte.
+- Las instrucciones de reproducción son claras y el `requirements.txt` de la raíz se conserva, así que se puede instalar `matplotlib` como indican.
+- Hay siete commits con mensajes descriptivos sobre el laboratorio.
 
 ## ¿El código funciona?
-Sí. Los dos algoritmos ordenan bien en mis pruebas y los dos scripts corren sin errores y generan las gráficas.
+Sí. Los dos algoritmos ordenan bien y cuentan las comparaciones correctamente, y los dos scripts corren sin errores y generan las gráficas.
 
 ## Para el próximo laboratorio
-- Evite `sorted()` y `list.sort()` en todo el código, también en los generadores de datos.
-- Agregue *docstring* a todas las funciones, incluidas las internas, y corrija los detalles de PEP 8.
-- Cuando pida el conteo línea a línea, escriba cuántas veces se ejecuta cada línea y sume.
-- Cuantifique las consecuencias ambientales (horas de ejecución por año) y cierre cada perjuicio diciendo quién asume el costo.
-- Repita las mediciones y promedie para obtener curvas más estables.
+- Verifique que las cifras del informe coincidan con las gráficas publicadas antes de entregar.
+- Desarrolle más las obligaciones éticas que se desprenden del caso, no solo el costo para cada afectado.
+- Contraste siempre lo medido con la complejidad calculada, diciéndolo de forma explícita.
+- Elimine las líneas en blanco sobrantes al final de cada archivo y revise PEP 8 antes de entregar.
