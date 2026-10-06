@@ -11,11 +11,11 @@ Muy buen trabajo: el informe es completo y apoyado en sus propias mediciones.
 |---|---|
 | Corrección conceptual | 23 / 25 |
 | Calidad de la explicación teórica | 24 / 25 |
-| Corrección de la implementación | 18 / 20 |
+| Corrección de la implementación | 19 / 20 |
 | Calidad del análisis de las gráficas | 17 / 20 |
 | Documentación y organización del informe | 10 / 10 |
-| **Total** | **92 / 100** |
-| **Nota (0–5)** | **4.60** |
+| **Total** | **93 / 100** |
+| **Nota (0–5)** | **4.65** |
 
 ## 1. Corrección conceptual (23 / 25)
 **Lo que hizo bien:**
@@ -41,7 +41,7 @@ Muy buen trabajo: el informe es completo y apoyado en sus propias mediciones.
 - En las definiciones, aclare que el tamaño `n` se mantiene fijo al tomar el máximo, el mínimo o el promedio.
 - El conteo línea a línea se hace solo para el peor caso; agregue también el mejor caso para ver de dónde sale `Θ(n)`.
 
-## 3. Corrección de la implementación (18 / 20)
+## 3. Corrección de la implementación (19 / 20)
 **Lo que hizo bien:**
 - `insertion_sort` y `merge_sort` ordenan bien de mayor a menor en mis pruebas con listas aleatorias y pequeñas, no cambian la lista recibida y cuentan solo comparaciones entre elementos (n − 1 en el mejor caso, n(n − 1)/2 en el peor).
 - `merge_sort` tiene su propia mezcla recursiva y no se usa `sorted()` ni `list.sort()` en ningún archivo.
@@ -49,7 +49,6 @@ Muy buen trabajo: el informe es completo y apoyado en sus propias mediciones.
 - Todas las funciones tienen *type hints* y *docstring*.
 
 **Lo que puede mejorar:**
-- Los cuatro archivos `.py` terminan con una línea en blanco de más (detalle de PEP 8).
 - Las estructuras de resultados en los scripts de medición podrían llevar anotación de tipos.
 
 ## 4. Calidad del análisis de las gráficas (17 / 20)
@@ -78,4 +77,3 @@ Sí. Los dos algoritmos ordenan bien y cuentan las comparaciones correctamente, 
 - Verifique que las cifras del informe coincidan con las gráficas publicadas antes de entregar.
 - Desarrolle más las obligaciones éticas que se desprenden del caso, no solo el costo para cada afectado.
 - Contraste siempre lo medido con la complejidad calculada, diciéndolo de forma explícita.
-- Elimine las líneas en blanco sobrantes al final de cada archivo y revise PEP 8 antes de entregar.
