@@ -97,7 +97,11 @@ $$T(n) = 2T(n/2) + \Theta(n), \quad \text{para } n > 1; \quad T(1) = \Theta(1)$$
 - $\Theta(n)$: trabajo de `suma_cruzada`, que barre linealmente desde el centro hacia los extremos sumando $n$ pasos.
 
 Resolviendo por el Teorema Maestro ($a=2, b=2, f(n)=\Theta(n)$):
-Como $\log_2 2 = 1 \implies n^1 = n$, la función $f(n) = \Theta(n)$ crece al mismo ritmo que $n^{\log_b a}$. Esto corresponde al **Caso 2**, concluyendo que $T(n) = \Theta(n \log n)$.
+Calculamos el exponente crítico: $\log_b a = \log_2 2 = 1 \implies n^{\log_b a} = n^1 = n$.
+Evaluamos la condición explícita del **Caso 2 del Teorema Maestro**:
+$$f(n) = \Theta(n^{\log_b a}) \iff \Theta(n) = \Theta(n)$$
+Como la condición del Caso 2 se cumple de manera exacta ($f(n)$ crece asintóticamente a la misma tasa que $n^{\log_b a}$), la solución formal de la recurrencia es:
+$$T(n) = \Theta(n^{\log_b a} \log n) = \Theta(n \log n)$$
 
 En fuerza bruta evaluamos todos los pares $(i, j)$ con $0 \le i \le j < n$. El total de pares es:
 $$\sum_{i=0}^{n-1} (n - i) = \frac{n(n+1)}{2} = \Theta(n^2)$$
@@ -129,7 +133,10 @@ Dividir no mejora el problema del máximo porque cualquier algoritmo debe mirar 
 
 Recomiendo a la gerente implementar **Divide y Vencerás**.
 
-Como **estimación** matemática basada en los datos medidos en $n = 8000$ (y no por regla de tres lineal, pues los algoritmos no crecen linealmente):
+Como **estimación** matemática fundamentada en el modelo asintótico y no mediante una regla de tres lineal (dado que el crecimiento temporal no es lineal):
+
+*Nota metodológica:* Aclaramos expresamente que esta estimación surge de una sola medición empírica local en $n = 8000$ ($1.1076\text{ s}$ en fuerza bruta y $0.01032\text{ s}$ en divide y vencerás sobre un procesador Intel Core i7 con Python 3.11 en Windows). El valor numérico absoluto puede variar según el hardware, la velocidad del procesador y la gestión de memoria de cada computador, pero la relación relativa y el orden de magnitud entre ambas curvas se mantienen invariantes.
+
 - **Fuerza Bruta:** Pasar de $8\,000$ a $1\,000\,000$ multiplica $n$ por $125$. Al ser $\Theta(n^2)$, el tiempo escala por $125^2 = 15\,625$. Con nuestro tiempo medido de $1.1076$ s:
   $$1.1076\text{ s} \times 15\,625 \approx 17\,306\text{ segundos} \approx 4.8\text{ horas}$$
 - **Divide y Vencerás:** El factor de escala asintótico es $\frac{10^6 \log_2(10^6)}{8000 \log_2(8000)} \approx 192.15$. Con nuestro tiempo medido de $0.01032$ s:

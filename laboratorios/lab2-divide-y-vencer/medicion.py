@@ -1,3 +1,5 @@
+"""Medicion experimental y generacion de graficas para el problema del subarreglo maximo."""
+
 import os
 import random
 import time
@@ -6,6 +8,11 @@ from subarreglo import subarreglo_fuerza_bruta, subarreglo_maximo
 
 
 def ejecutar_experimento() -> None:
+    """Ejecuta la medicion comparativa de rendimiento entre fuerza bruta y divide y venceras.
+
+    Genera datos aleatorios reproducibles para 8 tamanos de entrada, promedia los
+    tiempos en 5 repeticiones por tamano y guarda la grafica comparativa en disco.
+    """
     tamanos: list[int] = [10, 50, 100, 500, 1000, 2000, 4000, 8000]
     repeticiones: int = 5
     semilla_base: int = 42
