@@ -43,7 +43,7 @@ Muy buen trabajo: el informe es completo y apoyado en sus propias mediciones.
 
 ## 3. Corrección de la implementación (19 / 20)
 **Lo que hizo bien:**
-- `insertion_sort` y `merge_sort` ordenan bien de mayor a menor en mis pruebas con listas aleatorias y pequeñas, no cambian la lista recibida y cuentan solo comparaciones entre elementos (n − 1 en el mejor caso, n(n − 1)/2 en el peor).
+- `insertion_sort` y `merge_sort` ordenan bien de mayor a menor con listas aleatorias y pequeñas, no cambian la lista recibida y cuentan solo comparaciones entre elementos (n − 1 en el mejor caso, n(n − 1)/2 en el peor).
 - `merge_sort` tiene su propia mezcla recursiva y no se usa `sorted()` ni `list.sort()` en ningún archivo.
 - Los tres generadores producen valores distintos del tamaño pedido, con semilla reproducible; el escenario B deja el 98 % ordenado y el 2 % desordenado al final.
 - Todas las funciones tienen *type hints* y *docstring*.
